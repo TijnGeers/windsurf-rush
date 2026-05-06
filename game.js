@@ -82,7 +82,7 @@ const SKINS = [
     id: "obama", name: "Obama", price: 500,
     board: ["#002868", "#bf0a30", "#002868"],
     sail: ["rgba(255,255,255,0.95)", "rgba(0,40,104,0.8)", "rgba(191,10,48,0.7)"],
-    body: "#3d2b1f", trail: "#bf0a30"
+    body: "#3d2b1f", head: "#3d2b1f", trail: "#bf0a30"
   }
 ];
 
@@ -173,7 +173,7 @@ function drawSkinPreview(cvs, skin) {
   c.arc(30, 26, 7, 0, TAU);
   c.fill();
   // Head
-  c.fillStyle = "#fce4c4";
+  c.fillStyle = skin.head || "#fce4c4";
   c.beginPath();
   c.arc(30, 16, 5, 0, TAU);
   c.fill();
@@ -889,7 +889,7 @@ function drawSurfer() {
   ctx.fill();
 
   // Head
-  ctx.fillStyle = "#fce4c4";
+  ctx.fillStyle = skin.head || "#fce4c4";
   ctx.beginPath();
   ctx.arc(0, -28, 7, 0, TAU);
   ctx.fill();
