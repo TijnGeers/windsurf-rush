@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Windsurf Rush</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div id="app">
+    <canvas id="game"></canvas>
+
+    <div id="hud">
+      <div class="hud-left">
+        <div class="hud-item">
+          <span class="hud-label">Score</span>
+          <span class="hud-value" id="hud-score">0</span>
+        </div>
+        <div class="hud-item">
+          <span class="hud-label">Combo</span>
+          <span class="hud-value combo" id="hud-combo">x1</span>
+        </div>
+        <div class="hud-item coin-item">
+          <span class="hud-label">Coins</span>
+          <span class="hud-value coins" id="hud-coins">0</span>
+        </div>
+      </div>
+      <div class="hud-right">
+        <div class="hearts" id="hud-hearts"></div>
+        <div class="dash-bar-wrap">
+          <div class="dash-bar" id="dash-bar"></div>
+        </div>
+        <div class="hud-powerup" id="hud-powerup"></div>
+        <button class="pause-btn" id="pauseBtn" title="Pauze">⏸</button>
+      </div>
+    </div>
+
+    <div id="overlay">
+      <div class="overlay-content">
+        <p class="eyebrow">🏄 Arcade</p>
+        <h1>Windsurf Rush</h1>
+        <p class="tagline">Ontduik alles. Pak power-ups. Overleef de ocean.</p>
+        <div class="controls-grid">
+          <div><kbd>WASD</kbd> Bewegen</div>
+          <div><kbd>Space</kbd> Dash</div>
+          <div><kbd>Orbs</kbd> +punten</div>
+          <div><kbd>Esc</kbd> Pauze</div>
+        </div>
+        <div class="menu-coins">Je hebt <span id="menu-coins">0</span> coins</div>
+        <div class="menu-buttons">
+          <button id="startBtn">RIDE THE WAVE</button>
+          <button id="shopBtn" class="shop-btn">SHOP</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="pauseOverlay" class="hidden">
+      <div class="overlay-content">
+        <h1>PAUSED</h1>
+        <p class="tagline">Even pauze...</p>
+        <button id="resumeBtn">VERDER SPELEN</button>
+      </div>
+    </div>
+
+    <div id="shopOverlay" class="hidden">
+      <div class="shop-panel">
+        <div class="shop-header">
+          <h2>SKIN SHOP</h2>
+          <div class="shop-coins">Coins: <span id="shop-coins">0</span></div>
+        </div>
+        <div class="skin-grid" id="skin-grid"></div>
+        <button id="closeShopBtn" class="close-shop-btn">SLUITEN</button>
+      </div>
+    </div>
+
+    <div id="gameoverOverlay" class="hidden">
+      <div class="overlay-content">
+        <h1>WIPEOUT!</h1>
+        <p class="final-score">Score: <span id="final-score">0</span></p>
+        <p class="final-detail">Best combo: <span id="final-combo">x1</span></p>
+        <div class="menu-coins">Je verdiende <span id="earned-coins">0</span> coins deze ronde</div>
+        <div class="menu-buttons">
+          <button id="restartBtn">OPNIEUW</button>
+          <button id="shopBtn2" class="shop-btn">SHOP</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="game.js"></script>
+</body>
+</html>
