@@ -77,6 +77,12 @@ const SKINS = [
     board: ["#5c2d91", "#7c3aed", "#3b0764"],
     sail: ["rgba(124,58,237,0.92)", "rgba(92,45,145,0.7)", "rgba(59,7,100,0.6)"],
     body: "#7c3aed", trail: "#a855f7"
+  },
+  {
+    id: "obama", name: "Obama", price: 500,
+    board: ["#002868", "#bf0a30", "#002868"],
+    sail: ["rgba(255,255,255,0.95)", "rgba(0,40,104,0.8)", "rgba(191,10,48,0.7)"],
+    body: "#3d2b1f", trail: "#bf0a30"
   }
 ];
 
