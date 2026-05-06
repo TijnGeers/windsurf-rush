@@ -378,3 +378,38 @@ button:hover {
   padding: 10px 32px !important;
   font-size: 0.8rem !important;
 }
+
+/* ── Mobile dash button ── */
+.mobile-dash-btn {
+  display: none;
+  position: absolute;
+  bottom: 32px;
+  right: 24px;
+  z-index: 50;
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  border: 2px solid var(--cyan);
+  background: rgba(77,217,255,0.15);
+  color: var(--cyan);
+  font-family: inherit;
+  font-size: 0.75rem;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 0 20px rgba(77,217,255,0.25);
+  padding: 0;
+  margin: 0;
+  touch-action: manipulation;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+@media (hover: none) and (pointer: coarse) {
+  .mobile-dash-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}

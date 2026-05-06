@@ -192,13 +192,21 @@ function drawSkinPreview(cvs, skin) {
   c.stroke();
 }
 
+let shopOpenedFromGameOver = false;
+
 function openShop() {
   renderShop();
+  shopOpenedFromGameOver = !gameoverEl.classList.contains("hidden");
+  gameoverEl.classList.add("hidden");
   shopOverlay.classList.remove("hidden");
 }
 
 function closeShop() {
   shopOverlay.classList.add("hidden");
+  if (shopOpenedFromGameOver) {
+    gameoverEl.classList.remove("hidden");
+    shopOpenedFromGameOver = false;
+  }
 }
 
 function updateCoinDisplays() {
@@ -221,6 +229,46 @@ window.addEventListener("keydown", e => {
 });
 window.addEventListener("keyup", e => keys.delete(e.key.toLowerCase()));
 
+// ── Touch Input ──
+const touch = { active: false, startX: 0, startY: 0, dx: 0, dy: 0, dashRequested: false };
+const TOUCH_DEAD_ZONE = 10;
+const TOUCH_MAX_DIST = 80;
+
+canvas.addEventListener("touchstart", e => {
+  e.preventDefault();
+  const t = e.touches[0];
+  touch.active = true;
+  touch.startX = t.clientX;
+  touch.startY = t.clientY;
+  touch.dx = 0;
+  touch.dy = 0;
+}, { passive: false });
+
+canvas.addEventListener("touchmove", e => {
+  e.preventDefault();
+  if (!touch.active) return;
+  const t = e.touches[0];
+  touch.dx = t.clientX - touch.startX;
+  touch.dy = t.clientY - touch.startY;
+}, { passive: false });
+
+canvas.addEventListener("touchend", e => {
+  e.preventDefault();
+  touch.active = false;
+  touch.dx = 0;
+  touch.dy = 0;
+}, { passive: false });
+
+// Dash button for mobile
+const dashBtnEl = document.getElementById("dashBtn");
+if (dashBtnEl) {
+  dashBtnEl.addEventListener("touchstart", e => {
+    e.preventDefault();
+    e.stopPropagation();
+    touch.dashRequested = true;
+  }, { passive: false });
+}
+
 // ── Helpers ──
 const TAU = Math.PI * 2;
 const rand = (a, b) => a + Math.random() * (b - a);
@@ -242,8 +290,8 @@ function initGame() {
     combo: 1,
     bestCombo: 1,
     comboTimer: 0,
-    baseSpeed: 3,
-    speed: 3,
+    baseSpeed: 1.5,
+    speed: 1.5,
     spawnTimer: 0,
     orbTimer: 40,
     powerupTimer: 600,
@@ -422,6 +470,11 @@ function tryDash() {
   if (keys.has("a") || keys.has("arrowleft")) dx -= 1;
   if (keys.has("s") || keys.has("arrowdown")) dy += 1;
   if (keys.has("w") || keys.has("arrowup")) dy -= 1;
+  // Use touch direction if available
+  if (dx === 0 && dy === 0 && touch.active) {
+    const len = Math.hypot(touch.dx, touch.dy);
+    if (len > TOUCH_DEAD_ZONE) { dx = touch.dx / len; dy = touch.dy / len; }
+  }
   if (dx === 0 && dy === 0) dx = 1; // default forward
   const len = Math.hypot(dx, dy) || 1;
   p.dashVx = (dx / len) * 18;
@@ -452,10 +505,26 @@ function update() {
   if (keys.has("s") || keys.has("arrowdown")) ay += 1;
   if (keys.has("w") || keys.has("arrowup")) ay -= 1;
 
-  // Dash input
+  // Touch input (virtual joystick)
+  if (touch.active) {
+    const len = Math.hypot(touch.dx, touch.dy);
+    if (len > TOUCH_DEAD_ZONE) {
+      const norm = Math.min(len, TOUCH_MAX_DIST) / TOUCH_MAX_DIST;
+      ax += (touch.dx / len) * norm;
+      ay += (touch.dy / len) * norm;
+    }
+  }
+
+  // Dash input (keyboard)
   if (keys.has(" ")) {
     if (dashKeyReleased) { tryDash(); dashKeyReleased = false; }
   } else { dashKeyReleased = true; }
+
+  // Dash input (touch)
+  if (touch.dashRequested) {
+    tryDash();
+    touch.dashRequested = false;
+  }
 
   if (p.dashing > 0) {
     p.vx = p.dashVx;
@@ -482,7 +551,7 @@ function update() {
   if (p.invincible > 0) p.invincible -= 1;
   if (p.shieldTimer > 0) p.shieldTimer -= 1;
   if (p.magnetTimer > 0) p.magnetTimer -= 1;
-  if (p.turboTimer > 0) { p.turboTimer -= 1; if (p.turboTimer <= 0) G.baseSpeed = Math.max(3, G.baseSpeed - 0.5); }
+  if (p.turboTimer > 0) { p.turboTimer -= 1; if (p.turboTimer <= 0) G.baseSpeed = Math.max(1.5, G.baseSpeed - 0.5); }
   if (p.doubleTimer > 0) p.doubleTimer -= 1;
 
   // Trail
