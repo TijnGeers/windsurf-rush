@@ -57,6 +57,7 @@
         <div class="menu-buttons">
           <button id="startBtn">RIDE THE WAVE</button>
           <button id="shopBtn" class="shop-btn">SHOP</button>
+          <button id="profileBtn" class="profile-btn">PROFIEL</button>
         </div>
       </div>
     </div>
@@ -81,6 +82,31 @@
     </div>
 
     <button id="dashBtn" class="mobile-dash-btn">DASH</button>
+
+    <div id="profileOverlay" class="hidden">
+      <div class="profile-panel">
+        <h2>PROFIEL</h2>
+        <div class="profile-field">
+          <label for="usernameInput">Username</label>
+          <input type="text" id="usernameInput" placeholder="Voer je naam in..." maxlength="20" />
+        </div>
+        <div class="profile-stats">
+          <div class="profile-stat">
+            <span class="profile-stat-label">High Score</span>
+            <span class="profile-stat-value" id="profile-highscore">0</span>
+          </div>
+          <div class="profile-stat">
+            <span class="profile-stat-label">Coins nu</span>
+            <span class="profile-stat-value coins" id="profile-coins">0</span>
+          </div>
+          <div class="profile-stat">
+            <span class="profile-stat-label">Totaal verdiend</span>
+            <span class="profile-stat-value coins" id="profile-total-coins">0</span>
+          </div>
+        </div>
+        <button id="closeProfileBtn" class="close-shop-btn">SLUITEN</button>
+      </div>
+    </div>
 
     <div id="gameoverOverlay" class="hidden">
       <div class="overlay-content">

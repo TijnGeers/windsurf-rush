@@ -84,9 +84,15 @@ const SAVE_KEY = "windsurf_rush_save";
 function loadSave() {
   try {
     const raw = localStorage.getItem(SAVE_KEY);
-    if (raw) return JSON.parse(raw);
+    if (raw) {
+      const s = JSON.parse(raw);
+      if (!s.username) s.username = "";
+      if (!s.highScore) s.highScore = 0;
+      if (!s.totalCoinsEarned) s.totalCoinsEarned = s.coins || 0;
+      return s;
+    }
   } catch (_) {}
-  return { coins: 0, ownedSkins: ["default"], activeSkin: "default" };
+  return { coins: 0, ownedSkins: ["default"], activeSkin: "default", username: "", highScore: 0, totalCoinsEarned: 0 };
 }
 
 function writeSave(save) {
@@ -1314,6 +1320,8 @@ function gameOver() {
   const multiplier = getActiveSkin().coinMultiplier || 1;
   const earnedCoins = Math.floor(G.coinsThisRound * multiplier);
   save.coins += earnedCoins;
+  save.totalCoinsEarned += earnedCoins;
+  if (G.score > save.highScore) save.highScore = G.score;
   writeSave(save);
 
   document.getElementById("final-score").textContent = G.score.toLocaleString();
@@ -1330,6 +1338,31 @@ pauseBtn.addEventListener("click", togglePause);
 document.getElementById("shopBtn").addEventListener("click", openShop);
 document.getElementById("shopBtn2").addEventListener("click", openShop);
 document.getElementById("closeShopBtn").addEventListener("click", closeShop);
+
+// ── Profile ──
+const profileOverlay = document.getElementById("profileOverlay");
+const usernameInput = document.getElementById("usernameInput");
+
+function openProfile() {
+  usernameInput.value = save.username || "";
+  document.getElementById("profile-highscore").textContent = save.highScore.toLocaleString();
+  document.getElementById("profile-coins").textContent = save.coins.toLocaleString();
+  document.getElementById("profile-total-coins").textContent = save.totalCoinsEarned.toLocaleString();
+  profileOverlay.classList.remove("hidden");
+}
+
+function closeProfile() {
+  save.username = usernameInput.value.trim();
+  writeSave(save);
+  profileOverlay.classList.add("hidden");
+}
+
+document.getElementById("profileBtn").addEventListener("click", openProfile);
+document.getElementById("closeProfileBtn").addEventListener("click", closeProfile);
+usernameInput.addEventListener("input", () => {
+  save.username = usernameInput.value.trim();
+  writeSave(save);
+});
 
 // Initial state
 initGame();
