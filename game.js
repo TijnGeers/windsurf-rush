@@ -353,8 +353,8 @@ function initGame() {
     combo: 1,
     bestCombo: 1,
     comboTimer: 0,
-    baseSpeed: ("ontouchstart" in window) ? 1.7 : 1.5,
-    speed: ("ontouchstart" in window) ? 1.7 : 1.5,
+    baseSpeed: ("ontouchstart" in window) ? 1.7 : 1.2,
+    speed: ("ontouchstart" in window) ? 1.7 : 1.2,
     spawnTimer: 0,
     orbTimer: 40,
     powerupTimer: 600,
@@ -467,7 +467,7 @@ function spawnObstacle() {
   let radius, speed;
   if (type === "buoy") { radius = rand(16, 28); speed = 0; }
   else if (type === "rock") { radius = rand(22, 38); speed = 0; }
-  else { radius = 18; speed = rand(1, 2.5); }
+  else { radius = 18; speed = rand(0.6, 1.6); }
 
   const oceanTop = canvas.height * 0.48;
   G.obstacles.push({
@@ -557,7 +557,7 @@ let dashKeyReleased = true;
 function update() {
   G.t += 1;
   G.dayPhase = Math.min(1, G.t / 4000);
-  G.speed = G.baseSpeed + G.t * 0.0015;
+  G.speed = G.baseSpeed + G.t * 0.001;
 
   const p = G.player;
 
