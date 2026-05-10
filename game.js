@@ -1527,6 +1527,8 @@ function openProfile() {
   document.getElementById("profile-highscore").textContent = save.highScore.toLocaleString();
   document.getElementById("profile-coins").textContent = save.coins.toLocaleString();
   document.getElementById("profile-total-coins").textContent = save.totalCoinsEarned.toLocaleString();
+  document.getElementById("profile-skin").textContent = getActiveSkin().name;
+  document.getElementById("profile-world").textContent = getActiveWorld().name;
   profileOverlay.classList.remove("hidden");
 }
 
