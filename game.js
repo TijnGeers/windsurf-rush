@@ -217,7 +217,7 @@ const SKINS = [
     body: "#c41e3a", trail: "#ff4500"
   },
   {
-    id: "lova", name: "Lova", price: 0, coinMultiplier: 2.0, secret: true,
+    id: "lova", name: "Lova", price: 0, coinMultiplier: 67, secret: true,
     board: ["#ff69b4", "#ffb6c1", "#ff1493"],
     sail: ["rgba(255,182,193,0.92)", "rgba(255,105,180,0.7)", "rgba(255,20,147,0.6)"],
     body: "#ff69b4", trail: "#ffb6c1"

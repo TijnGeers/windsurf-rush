@@ -1,4 +1,4 @@
-const CACHE_NAME = "windsurf-rush-v16";
+const CACHE_NAME = "windsurf-rush-v17";
 const ASSETS = [
   "./",
   "./index.html",
