@@ -100,46 +100,82 @@ let save = loadSave();
 // ═══════════════════════════════════════════════════════════════
 const SKINS = [
   {
-    id: "default", name: "Classic", price: 0,
+    id: "default", name: "Classic", price: 0, coinMultiplier: 1.0,
     board: ["#ffd43b", "#ffe066", "#ff922b"],
     sail: ["rgba(255,255,255,0.92)", "rgba(77,217,255,0.7)", "rgba(255,107,157,0.6)"],
     body: "#ff6b9d", trail: "#4dd9ff"
   },
   {
-    id: "fire", name: "Inferno", price: 50,
+    id: "fire", name: "Inferno", price: 50, coinMultiplier: 1.1,
     board: ["#ff4500", "#ff6a00", "#ff0000"],
     sail: ["rgba(255,100,0,0.92)", "rgba(255,200,0,0.7)", "rgba(255,50,0,0.6)"],
     body: "#ff3333", trail: "#ff6600"
   },
   {
-    id: "ice", name: "Frostbite", price: 80,
+    id: "ice", name: "Frostbite", price: 80, coinMultiplier: 1.2,
     board: ["#a5d8ff", "#d0ebff", "#74c0fc"],
     sail: ["rgba(208,235,255,0.92)", "rgba(116,192,252,0.7)", "rgba(77,171,247,0.6)"],
     body: "#74c0fc", trail: "#d0ebff"
   },
   {
-    id: "neon", name: "Neon Rider", price: 120,
+    id: "neon", name: "Neon Rider", price: 120, coinMultiplier: 1.3,
     board: ["#00ff88", "#00ffcc", "#00ff44"],
     sail: ["rgba(0,255,136,0.92)", "rgba(0,255,204,0.7)", "rgba(255,0,255,0.6)"],
     body: "#ff00ff", trail: "#00ff88"
   },
   {
-    id: "gold", name: "Golden Wave", price: 200,
+    id: "sunset", name: "Sunset Surf", price: 180, coinMultiplier: 1.4,
+    board: ["#ff6b6b", "#ffa94d", "#ffd43b"],
+    sail: ["rgba(255,169,77,0.92)", "rgba(255,107,107,0.7)", "rgba(255,212,59,0.6)"],
+    body: "#ff8c42", trail: "#ffa94d"
+  },
+  {
+    id: "gold", name: "Golden Wave", price: 250, coinMultiplier: 1.5,
     board: ["#fcc419", "#ffe066", "#f59f00"],
     sail: ["rgba(252,196,25,0.92)", "rgba(255,224,102,0.7)", "rgba(245,159,0,0.6)"],
     body: "#fcc419", trail: "#ffe066"
   },
   {
-    id: "shadow", name: "Shadow Phantom", price: 350,
+    id: "toxic", name: "Toxic Tide", price: 350, coinMultiplier: 1.6,
+    board: ["#2b8a3e", "#51cf66", "#087f23"],
+    sail: ["rgba(81,207,102,0.92)", "rgba(43,138,62,0.7)", "rgba(8,127,35,0.6)"],
+    body: "#40c057", trail: "#69db7c"
+  },
+  {
+    id: "shadow", name: "Shadow Phantom", price: 450, coinMultiplier: 1.8,
     board: ["#5c2d91", "#7c3aed", "#3b0764"],
     sail: ["rgba(124,58,237,0.92)", "rgba(92,45,145,0.7)", "rgba(59,7,100,0.6)"],
     body: "#7c3aed", trail: "#a855f7"
   },
   {
-    id: "obama", name: "Obama", price: 500,
+    id: "obama", name: "Obama", price: 600, coinMultiplier: 2.0,
     board: ["#002868", "#bf0a30", "#002868"],
     sail: ["rgba(255,255,255,0.95)", "rgba(0,40,104,0.8)", "rgba(191,10,48,0.7)"],
     body: "#3d2b1f", head: "#3d2b1f", trail: "#bf0a30"
+  },
+  {
+    id: "ocean", name: "Ocean King", price: 800, coinMultiplier: 2.2,
+    board: ["#0077b6", "#00b4d8", "#023e8a"],
+    sail: ["rgba(0,180,216,0.92)", "rgba(0,119,182,0.7)", "rgba(2,62,138,0.6)"],
+    body: "#0096c7", trail: "#48cae4"
+  },
+  {
+    id: "galaxy", name: "Galaxy Rider", price: 1000, coinMultiplier: 2.5,
+    board: ["#240046", "#7b2cbf", "#e0aaff"],
+    sail: ["rgba(224,170,255,0.92)", "rgba(123,44,191,0.7)", "rgba(36,0,70,0.6)"],
+    body: "#9d4edd", trail: "#e0aaff"
+  },
+  {
+    id: "diamond", name: "Diamond", price: 1500, coinMultiplier: 3.0,
+    board: ["#b8f2e6", "#e8fffe", "#89d0c7"],
+    sail: ["rgba(232,255,254,0.92)", "rgba(184,242,230,0.7)", "rgba(137,208,199,0.6)"],
+    body: "#b8f2e6", trail: "#e8fffe"
+  },
+  {
+    id: "dragon", name: "Dragon", price: 2500, coinMultiplier: 3.5,
+    board: ["#8b0000", "#ff2400", "#4a0000"],
+    sail: ["rgba(255,36,0,0.92)", "rgba(139,0,0,0.7)", "rgba(74,0,0,0.6)"],
+    body: "#c41e3a", trail: "#ff4500"
   }
 ];
 
@@ -172,6 +208,10 @@ function renderShop() {
     const name = document.createElement("div");
     name.className = "skin-name";
     name.textContent = skin.name;
+
+    const multiplier = document.createElement("div");
+    multiplier.className = "skin-multiplier";
+    multiplier.textContent = `x${skin.coinMultiplier} coins`;
 
     const price = document.createElement("div");
     price.className = "skin-price" + (owned ? " owned" : "");
@@ -207,7 +247,7 @@ function renderShop() {
       });
     }
 
-    card.append(preview, name, price, btn);
+    card.append(preview, name, multiplier, price, btn);
     grid.appendChild(card);
   }
 }
@@ -357,6 +397,7 @@ function initGame() {
     speed: ("ontouchstart" in window) ? 1.7 : 1.2,
     spawnTimer: 0,
     orbTimer: 40,
+    coinOrbTimer: 200,
     powerupTimer: 600,
 
     // Sky gradient shift
@@ -488,7 +529,16 @@ function spawnOrb() {
   G.orbs.push({
     x: canvas.width + 20,
     y: rand(oceanTop + 15, canvas.height - 50),
-    radius: 12, pulse: rand(0, TAU)
+    radius: 12, pulse: rand(0, TAU), type: "score"
+  });
+}
+
+function spawnCoinOrb() {
+  const oceanTop = canvas.height * 0.48;
+  G.orbs.push({
+    x: canvas.width + 20,
+    y: rand(oceanTop + 15, canvas.height - 50),
+    radius: 14, pulse: rand(0, TAU), type: "coin"
   });
 }
 
@@ -636,6 +686,8 @@ function update() {
   }
   G.orbTimer -= 1;
   if (G.orbTimer <= 0) { spawnOrb(); G.orbTimer = rand(60, 120); }
+  G.coinOrbTimer -= 1;
+  if (G.coinOrbTimer <= 0) { spawnCoinOrb(); G.coinOrbTimer = rand(180, 350); }
   G.powerupTimer -= 1;
   if (G.powerupTimer <= 0) { spawnPowerup(); G.powerupTimer = rand(500, 800); }
 
@@ -714,14 +766,24 @@ function update() {
   // ── Collect orbs ──
   G.orbs = G.orbs.filter(o => {
     if (dist(p, o) < p.radius + o.radius + 4) {
-      const pts = (p.doubleTimer > 0 ? 20 : 10) * G.combo;
-      G.score += pts;
-      G.combo += 1;
-      G.comboTimer = 120;
-      G.coinsThisRound += 1;
-      if (G.combo > G.bestCombo) G.bestCombo = G.combo;
-      floatingText(o.x, o.y - 16, `+${pts}`, "#69db7c");
-      burst(o.x, o.y, "#69db7c", 10, 4);
+      if (o.type === "coin") {
+        const coins = 5;
+        G.coinsThisRound += coins;
+        G.combo += 1;
+        G.comboTimer = 120;
+        if (G.combo > G.bestCombo) G.bestCombo = G.combo;
+        floatingText(o.x, o.y - 16, `+${coins} 🪙`, "#4dabf7");
+        burst(o.x, o.y, "#4dabf7", 12, 4);
+      } else {
+        const pts = (p.doubleTimer > 0 ? 20 : 10) * G.combo;
+        G.score += pts;
+        G.combo += 1;
+        G.comboTimer = 120;
+        G.coinsThisRound += 1;
+        if (G.combo > G.bestCombo) G.bestCombo = G.combo;
+        floatingText(o.x, o.y - 16, `+${pts}`, "#69db7c");
+        burst(o.x, o.y, "#69db7c", 10, 4);
+      }
       return false;
     }
     return true;
@@ -1067,18 +1129,22 @@ function drawObstacle(o) {
 
 function drawOrb(o) {
   const r = o.radius + Math.sin(o.pulse) * 3;
+  const isCoin = o.type === "coin";
+  const glowColor = isCoin ? "rgba(77,171,247," : "rgba(105,219,124,";
+  const coreColor = isCoin ? "#4dabf7" : "#a9e34b";
+  const shadowColor = isCoin ? "#339af0" : "#69db7c";
   // Glow
   const grd = ctx.createRadialGradient(o.x, o.y, r * 0.2, o.x, o.y, r + 14);
-  grd.addColorStop(0, "rgba(105,219,124,0.6)");
-  grd.addColorStop(0.5, "rgba(105,219,124,0.15)");
-  grd.addColorStop(1, "rgba(105,219,124,0)");
+  grd.addColorStop(0, glowColor + "0.6)");
+  grd.addColorStop(0.5, glowColor + "0.15)");
+  grd.addColorStop(1, glowColor + "0)");
   ctx.fillStyle = grd;
   ctx.beginPath();
   ctx.arc(o.x, o.y, r + 14, 0, TAU);
   ctx.fill();
   // Core
-  ctx.fillStyle = "#a9e34b";
-  ctx.shadowColor = "#69db7c";
+  ctx.fillStyle = coreColor;
+  ctx.shadowColor = shadowColor;
   ctx.shadowBlur = 12;
   ctx.beginPath();
   ctx.arc(o.x, o.y, r, 0, TAU);
@@ -1089,6 +1155,14 @@ function drawOrb(o) {
   ctx.beginPath();
   ctx.arc(o.x - r * 0.25, o.y - r * 0.3, r * 0.35, 0, TAU);
   ctx.fill();
+  // Coin symbol for blue orbs
+  if (isCoin) {
+    ctx.fillStyle = "rgba(255,255,255,0.85)";
+    ctx.font = "bold 10px Outfit";
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.fillText("$", o.x, o.y + 1);
+  }
 }
 
 function drawPowerup(pu) {
@@ -1237,12 +1311,14 @@ function gameOver() {
   burst(G.player.x, G.player.y, "#ff6b6b", 40, 8);
   draw();
 
-  save.coins += G.coinsThisRound;
+  const multiplier = getActiveSkin().coinMultiplier || 1;
+  const earnedCoins = Math.floor(G.coinsThisRound * multiplier);
+  save.coins += earnedCoins;
   writeSave(save);
 
   document.getElementById("final-score").textContent = G.score.toLocaleString();
   document.getElementById("final-combo").textContent = `x${G.bestCombo}`;
-  document.getElementById("earned-coins").textContent = G.coinsThisRound;
+  document.getElementById("earned-coins").textContent = `${earnedCoins} (x${multiplier})`;
   updateCoinDisplays();
   gameoverEl.classList.remove("hidden");
 }
