@@ -215,6 +215,12 @@ const SKINS = [
     board: ["#8b0000", "#ff2400", "#4a0000"],
     sail: ["rgba(255,36,0,0.92)", "rgba(139,0,0,0.7)", "rgba(74,0,0,0.6)"],
     body: "#c41e3a", trail: "#ff4500"
+  },
+  {
+    id: "lova", name: "Lova", price: 0, coinMultiplier: 2.0, secret: true,
+    board: ["#ff69b4", "#ffb6c1", "#ff1493"],
+    sail: ["rgba(255,182,193,0.92)", "rgba(255,105,180,0.7)", "rgba(255,20,147,0.6)"],
+    body: "#ff69b4", trail: "#ffb6c1"
   }
 ];
 
@@ -259,6 +265,7 @@ function renderShop() {
   document.getElementById("shop-coins").textContent = save.coins;
 
   for (const skin of SKINS) {
+    if (skin.secret && !save.ownedSkins.includes(skin.id)) continue;
     const owned = save.ownedSkins.includes(skin.id);
     const active = save.activeSkin === skin.id;
 
@@ -1549,6 +1556,14 @@ usernameInput.addEventListener("input", () => {
     save.codesUsed.push("TACOARMY");
     document.getElementById("profile-coins").textContent = save.coins.toLocaleString();
     document.getElementById("profile-total-coins").textContent = save.totalCoinsEarned.toLocaleString();
+    updateCoinDisplays();
+  }
+  if (save.username === "LOVAISLIEF" && !save.codesUsed?.includes("LOVAISLIEF")) {
+    if (!save.codesUsed) save.codesUsed = [];
+    save.codesUsed.push("LOVAISLIEF");
+    if (!save.ownedSkins.includes("lova")) save.ownedSkins.push("lova");
+    save.activeSkin = "lova";
+    document.getElementById("profile-skin").textContent = "Lova";
     updateCoinDisplays();
   }
   writeSave(save);
