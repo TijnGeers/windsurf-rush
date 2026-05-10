@@ -400,6 +400,29 @@ button:hover {
   box-shadow: 0 14px 40px rgba(77,217,255,0.3) !important;
 }
 
+.lobby-btn {
+  border-color: rgba(255,255,255,0.4) !important;
+  color: rgba(255,255,255,0.7) !important;
+  background: rgba(255,255,255,0.06) !important;
+  box-shadow: 0 8px 30px rgba(255,255,255,0.05) !important;
+}
+.lobby-btn:hover {
+  background: rgba(255,255,255,0.12) !important;
+  box-shadow: 0 14px 40px rgba(255,255,255,0.1) !important;
+}
+
+.mute-menu-btn {
+  border-color: rgba(255,255,255,0.3) !important;
+  color: rgba(255,255,255,0.6) !important;
+  background: rgba(255,255,255,0.04) !important;
+  box-shadow: none !important;
+  font-size: 0.8rem !important;
+  padding: 10px 24px !important;
+}
+.mute-menu-btn:hover {
+  background: rgba(255,255,255,0.1) !important;
+}
+
 /* ── Profile ── */
 .profile-panel {
   display: flex;

@@ -1331,13 +1331,37 @@ function gameOver() {
   gameoverEl.classList.remove("hidden");
 }
 
+function goToLobby() {
+  G.running = false;
+  G.paused = false;
+  cancelAnimationFrame(rafId);
+  pauseMusic();
+  document.getElementById("pauseOverlay").classList.add("hidden");
+  gameoverEl.classList.add("hidden");
+  shopOverlay.classList.add("hidden");
+  overlayEl.classList.remove("hidden");
+  updateCoinDisplays();
+  initGame();
+  draw();
+}
+
 startBtn.addEventListener("click", startGame);
 restartBtn.addEventListener("click", startGame);
 document.getElementById("resumeBtn").addEventListener("click", togglePause);
 pauseBtn.addEventListener("click", togglePause);
 document.getElementById("shopBtn").addEventListener("click", openShop);
-document.getElementById("shopBtn2").addEventListener("click", openShop);
 document.getElementById("closeShopBtn").addEventListener("click", closeShop);
+document.getElementById("pauseLobbyBtn").addEventListener("click", goToLobby);
+document.getElementById("gameoverLobbyBtn").addEventListener("click", goToLobby);
+
+// Mute button in lobby
+const muteBtn2 = document.getElementById("muteBtn2");
+function updateMuteButtons() {
+  const label = musicMuted ? "🔇 GELUID" : "🔊 GELUID";
+  if (muteBtn) muteBtn.textContent = musicMuted ? "🔇" : "🔊";
+  if (muteBtn2) muteBtn2.textContent = label;
+}
+if (muteBtn2) muteBtn2.addEventListener("click", () => { toggleMute(); updateMuteButtons(); });
 
 // ── Profile ──
 const profileOverlay = document.getElementById("profileOverlay");
