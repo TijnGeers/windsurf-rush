@@ -18,6 +18,63 @@ const startBtn = document.getElementById("startBtn");
 const restartBtn = document.getElementById("restartBtn");
 const pauseBtn = document.getElementById("pauseBtn");
 const shopOverlay = document.getElementById("shopOverlay");
+const muteBtn = document.getElementById("muteBtn");
+
+// ═══════════════════════════════════════════════════════════════
+//  BACKGROUND MUSIC
+// ═══════════════════════════════════════════════════════════════
+const musicTracks = [
+  new Audio("music1.mp3"),
+  new Audio("music2.mp3")
+];
+let currentTrack = 0;
+let musicMuted = false;
+
+for (const track of musicTracks) {
+  track.volume = 0.35;
+  track.preload = "auto";
+}
+
+musicTracks[0].addEventListener("ended", () => { playTrack(1); });
+musicTracks[1].addEventListener("ended", () => { playTrack(0); });
+
+function playTrack(index) {
+  musicTracks[1 - index].pause();
+  currentTrack = index;
+  if (!musicMuted) {
+    musicTracks[index].currentTime = 0;
+    musicTracks[index].play().catch(() => {});
+  }
+}
+
+function startMusic() {
+  if (!musicMuted) {
+    musicTracks[currentTrack].play().catch(() => {});
+  }
+}
+
+function pauseMusic() {
+  musicTracks[currentTrack].pause();
+}
+
+function resumeMusic() {
+  if (!musicMuted) {
+    musicTracks[currentTrack].play().catch(() => {});
+  }
+}
+
+function toggleMute() {
+  musicMuted = !musicMuted;
+  if (musicMuted) {
+    musicTracks[currentTrack].pause();
+    muteBtn.textContent = "🔇";
+  } else {
+    musicTracks[currentTrack].play().catch(() => {});
+    muteBtn.textContent = "🔊";
+  }
+}
+
+if (muteBtn) muteBtn.addEventListener("click", toggleMute);
 
 // ═══════════════════════════════════════════════════════════════
 //  SAVE SYSTEM (localStorage)
@@ -1144,11 +1201,13 @@ function togglePause() {
     G.paused = false;
     G.running = true;
     document.getElementById("pauseOverlay").classList.add("hidden");
+    resumeMusic();
     loop();
   } else {
     G.paused = true;
     G.running = false;
     cancelAnimationFrame(rafId);
+    pauseMusic();
     document.getElementById("pauseOverlay").classList.remove("hidden");
   }
 }
@@ -1167,6 +1226,7 @@ function startGame() {
   gameoverEl.classList.add("hidden");
   shopOverlay.classList.add("hidden");
   updateCoinDisplays();
+  startMusic();
   loop();
 }
 
