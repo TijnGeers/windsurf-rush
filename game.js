@@ -76,6 +76,25 @@ function toggleMute() {
 
 if (muteBtn) muteBtn.addEventListener("click", toggleMute);
 
+// Auto-start music on first user interaction (browsers block autoplay)
+let musicStarted = false;
+function tryAutoStartMusic() {
+  if (!musicStarted && !musicMuted) {
+    musicTracks[currentTrack].play().then(() => { musicStarted = true; }).catch(() => {});
+  }
+}
+document.addEventListener("click", tryAutoStartMusic, { once: false });
+document.addEventListener("touchstart", tryAutoStartMusic, { once: false });
+
+// Pause music when leaving page, resume when coming back
+document.addEventListener("visibilitychange", () => {
+  if (document.hidden) {
+    pauseMusic();
+  } else if (!musicMuted && musicStarted) {
+    resumeMusic();
+  }
+});
+
 // ═══════════════════════════════════════════════════════════════
 //  SAVE SYSTEM (localStorage)
 // ═══════════════════════════════════════════════════════════════
