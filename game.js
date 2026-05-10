@@ -108,10 +108,12 @@ function loadSave() {
       if (!s.username) s.username = "";
       if (!s.highScore) s.highScore = 0;
       if (!s.totalCoinsEarned) s.totalCoinsEarned = s.coins || 0;
+      if (!s.ownedWorlds) s.ownedWorlds = ["ocean"];
+      if (!s.activeWorld) s.activeWorld = "ocean";
       return s;
     }
   } catch (_) {}
-  return { coins: 0, ownedSkins: ["default"], activeSkin: "default", username: "", highScore: 0, totalCoinsEarned: 0 };
+  return { coins: 0, ownedSkins: ["default"], activeSkin: "default", username: "", highScore: 0, totalCoinsEarned: 0, ownedWorlds: ["ocean"], activeWorld: "ocean" };
 }
 
 function writeSave(save) {
@@ -218,6 +220,32 @@ const SKINS = [
 
 function getActiveSkin() {
   return SKINS.find(s => s.id === save.activeSkin) || SKINS[0];
+}
+
+// ═══════════════════════════════════════════════════════════════
+//  WORLDS
+// ═══════════════════════════════════════════════════════════════
+const WORLDS = [
+  {
+    id: "ocean", name: "Oceaan", price: 0,
+    description: "De klassieke blauwe oceaan",
+    sky: { start: ["#ffa94d", "#ff6b9d", "#4dabf7"], end: ["#1a1040", "#0d1b3e", "#0a2540"] },
+    ocean: { start: ["#4dabf7", "#1c7ed6", "#0b4d8a"], end: ["#0a3060", "#072040", "#030d1a"] },
+    sunColor: "#ffe066", sunGlow: "rgba(255,224,102,0.15)",
+    waveAlpha: 0.06, buoyColor: "#ff6b35", rockColor: "#4a4a5a", sharkColor: "#555570"
+  },
+  {
+    id: "lava", name: "Vulkaan", price: 5000,
+    description: "Surf over gloeiende lava!",
+    sky: { start: ["#4a0000", "#8b0000", "#1a0000"], end: ["#0a0000", "#050000", "#020000"] },
+    ocean: { start: ["#ff4500", "#cc3700", "#8b0000"], end: ["#4a0000", "#2d0000", "#1a0000"] },
+    sunColor: "#ff6600", sunGlow: "rgba(255,102,0,0.2)",
+    waveAlpha: 0.08, buoyColor: "#ffd43b", rockColor: "#1a1a1a", sharkColor: "#333"
+  }
+];
+
+function getActiveWorld() {
+  return WORLDS.find(w => w.id === save.activeWorld) || WORLDS[0];
 }
 
 // ═══════════════════════════════════════════════════════════════
@@ -886,17 +914,18 @@ function update() {
 // ═══════════════════════════════════════════════════════════════
 
 function drawSky() {
+  const world = getActiveWorld();
   // Transition from sunset to night
   const grad = ctx.createLinearGradient(0, 0, 0, canvas.height * 0.55);
   const phase = G.dayPhase;
   if (phase < 0.5) {
-    grad.addColorStop(0, lerpColor("#ffa94d", "#1a1040", phase * 2));
-    grad.addColorStop(0.5, lerpColor("#ff6b9d", "#0d1b3e", phase * 2));
-    grad.addColorStop(1, lerpColor("#4dabf7", "#0a2540", phase * 2));
+    grad.addColorStop(0, lerpColor(world.sky.start[0], world.sky.end[0], phase * 2));
+    grad.addColorStop(0.5, lerpColor(world.sky.start[1], world.sky.end[1], phase * 2));
+    grad.addColorStop(1, lerpColor(world.sky.start[2], world.sky.end[2], phase * 2));
   } else {
-    grad.addColorStop(0, lerpColor("#1a1040", "#050510", (phase - 0.5) * 2));
-    grad.addColorStop(0.5, "#0d1b3e");
-    grad.addColorStop(1, "#0a2540");
+    grad.addColorStop(0, lerpColor(world.sky.end[0], "#050510", (phase - 0.5) * 2));
+    grad.addColorStop(0.5, world.sky.end[1]);
+    grad.addColorStop(1, world.sky.end[2]);
   }
   ctx.fillStyle = grad;
   ctx.fillRect(0, 0, canvas.width, canvas.height * 0.55);
@@ -904,8 +933,8 @@ function drawSky() {
   // Sun / moon
   const sunY = lerp(canvas.height * 0.15, canvas.height * 0.5, phase);
   const sunR = lerp(50, 30, phase);
-  const sunColor = phase < 0.5 ? "#ffe066" : "#e0e0ff";
-  const sunGlow = phase < 0.5 ? "rgba(255,224,102,0.15)" : "rgba(200,200,255,0.08)";
+  const sunColor = phase < 0.5 ? world.sunColor : "#e0e0ff";
+  const sunGlow = phase < 0.5 ? world.sunGlow : "rgba(200,200,255,0.08)";
   ctx.fillStyle = sunGlow;
   ctx.beginPath();
   ctx.arc(canvas.width * 0.75, sunY, sunR + 40, 0, TAU);
@@ -944,12 +973,13 @@ function drawClouds() {
 }
 
 function drawOcean() {
+  const world = getActiveWorld();
   const oceanTop = canvas.height * 0.45;
   const grad = ctx.createLinearGradient(0, oceanTop, 0, canvas.height);
   const phase = G.dayPhase;
-  grad.addColorStop(0, lerpColor("#4dabf7", "#0a3060", phase));
-  grad.addColorStop(0.3, lerpColor("#1c7ed6", "#072040", phase));
-  grad.addColorStop(1, lerpColor("#0b4d8a", "#030d1a", phase));
+  grad.addColorStop(0, lerpColor(world.ocean.start[0], world.ocean.end[0], phase));
+  grad.addColorStop(0.3, lerpColor(world.ocean.start[1], world.ocean.end[1], phase));
+  grad.addColorStop(1, lerpColor(world.ocean.start[2], world.ocean.end[2], phase));
   ctx.fillStyle = grad;
   ctx.fillRect(0, oceanTop, canvas.width, canvas.height - oceanTop);
 
@@ -957,7 +987,7 @@ function drawOcean() {
   ctx.lineWidth = 1.5;
   for (let row = 0; row < 14; row++) {
     const y = oceanTop + 30 + row * 32;
-    const alpha = 0.06 + row * 0.012;
+    const alpha = world.waveAlpha + row * 0.012;
     ctx.strokeStyle = `rgba(255,255,255,${alpha})`;
     ctx.beginPath();
     for (let x = -20; x <= canvas.width + 20; x += 16) {
@@ -1104,11 +1134,12 @@ function drawObstacle(o) {
   ctx.translate(o.x, o.y);
   if (o.type === "shark") ctx.rotate(o.angle);
 
+  const world = getActiveWorld();
   if (o.type === "buoy") {
     // Buoy with stripes
-    ctx.shadowColor = "#ff4500";
+    ctx.shadowColor = world.buoyColor;
     ctx.shadowBlur = 8;
-    ctx.fillStyle = "#ff6b35";
+    ctx.fillStyle = world.buoyColor;
     ctx.beginPath();
     ctx.arc(0, 0, o.radius, 0, TAU);
     ctx.fill();
@@ -1123,7 +1154,7 @@ function drawObstacle(o) {
     ctx.fill();
   } else if (o.type === "rock") {
     // Jagged rock
-    ctx.fillStyle = "#4a4a5a";
+    ctx.fillStyle = world.rockColor;
     ctx.shadowColor = "#000";
     ctx.shadowBlur = 6;
     ctx.beginPath();
@@ -1143,7 +1174,7 @@ function drawObstacle(o) {
     ctx.fill();
   } else if (o.type === "shark") {
     // Shark fin
-    ctx.fillStyle = "#555570";
+    ctx.fillStyle = world.sharkColor;
     ctx.shadowColor = "#000";
     ctx.shadowBlur = 6;
     ctx.beginPath();
@@ -1393,6 +1424,78 @@ document.getElementById("shopBtn").addEventListener("click", openShop);
 document.getElementById("closeShopBtn").addEventListener("click", closeShop);
 document.getElementById("pauseLobbyBtn").addEventListener("click", goToLobby);
 document.getElementById("gameoverLobbyBtn").addEventListener("click", goToLobby);
+
+// ── Worlds ──
+const worldsOverlay = document.getElementById("worldsOverlay");
+
+function renderWorlds() {
+  const grid = document.getElementById("worlds-grid");
+  grid.innerHTML = "";
+  document.getElementById("worlds-coins").textContent = save.coins;
+
+  for (const world of WORLDS) {
+    const owned = save.ownedWorlds.includes(world.id);
+    const active = save.activeWorld === world.id;
+
+    const card = document.createElement("div");
+    card.className = "world-card" + (active ? " active" : "");
+
+    const name = document.createElement("div");
+    name.className = "world-name";
+    name.textContent = world.name;
+
+    const desc = document.createElement("div");
+    desc.className = "world-desc";
+    desc.textContent = world.description;
+
+    const price = document.createElement("div");
+    price.className = "world-price" + (owned ? " owned" : "");
+    price.textContent = owned ? "Unlocked" : `${world.price} coins`;
+
+    const btn = document.createElement("button");
+    btn.className = "skin-buy-btn";
+
+    if (active) {
+      btn.textContent = "ACTIEF";
+      btn.disabled = true;
+    } else if (owned) {
+      btn.textContent = "SELECTEER";
+      btn.addEventListener("click", () => {
+        save.activeWorld = world.id;
+        writeSave(save);
+        renderWorlds();
+      });
+    } else {
+      btn.textContent = "KOOP";
+      btn.disabled = save.coins < world.price;
+      btn.addEventListener("click", () => {
+        if (save.coins >= world.price) {
+          save.coins -= world.price;
+          save.ownedWorlds.push(world.id);
+          save.activeWorld = world.id;
+          writeSave(save);
+          updateCoinDisplays();
+          renderWorlds();
+        }
+      });
+    }
+
+    card.append(name, desc, price, btn);
+    grid.appendChild(card);
+  }
+}
+
+function openWorlds() {
+  renderWorlds();
+  worldsOverlay.classList.remove("hidden");
+}
+
+function closeWorlds() {
+  worldsOverlay.classList.add("hidden");
+}
+
+document.getElementById("worldsBtn").addEventListener("click", openWorlds);
+document.getElementById("closeWorldsBtn").addEventListener("click", closeWorlds);
 
 // Mute button in lobby
 const muteBtn2 = document.getElementById("muteBtn2");

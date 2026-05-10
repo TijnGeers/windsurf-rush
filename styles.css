@@ -127,7 +127,7 @@ canvas {
 }
 
 /* ── Overlays ── */
-#overlay, #gameoverOverlay, #pauseOverlay, #shopOverlay, #profileOverlay {
+#overlay, #gameoverOverlay, #pauseOverlay, #shopOverlay, #profileOverlay, #worldsOverlay {
   position: absolute;
   inset: 0;
   display: flex;
@@ -404,6 +404,92 @@ button:hover {
 .profile-btn:hover {
   background: rgba(77,217,255,0.2) !important;
   box-shadow: 0 14px 40px rgba(77,217,255,0.3) !important;
+}
+
+.worlds-btn {
+  border-color: #ff6b35 !important;
+  color: #ff6b35 !important;
+  background: rgba(255,107,53,0.08) !important;
+  box-shadow: 0 8px 30px rgba(255,107,53,0.15) !important;
+}
+.worlds-btn:hover {
+  background: rgba(255,107,53,0.2) !important;
+  box-shadow: 0 14px 40px rgba(255,107,53,0.3) !important;
+}
+
+/* ── Worlds Panel ── */
+.worlds-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: 36px 44px;
+  background: rgba(4,24,37,0.94);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 32px;
+  backdrop-filter: blur(24px);
+  box-shadow: 0 40px 120px rgba(0,0,0,0.6);
+  max-width: 500px;
+  width: calc(100vw - 40px);
+  max-height: calc(100vh - 40px);
+  overflow-y: auto;
+}
+
+.worlds-panel h2 {
+  font-size: 1.6rem;
+  font-weight: 900;
+  color: #fff;
+  margin: 0;
+}
+
+.worlds-coins {
+  font-size: 0.85rem;
+  color: var(--gold);
+  font-weight: 700;
+}
+
+.worlds-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  width: 100%;
+}
+
+.world-card {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 16px 20px;
+  border-radius: 16px;
+  background: rgba(255,255,255,0.04);
+  border: 2px solid rgba(255,255,255,0.08);
+  transition: all 0.2s;
+}
+
+.world-card.active {
+  border-color: var(--cyan);
+  background: rgba(77,217,255,0.06);
+}
+
+.world-name {
+  font-size: 1.1rem;
+  font-weight: 900;
+  color: #fff;
+}
+
+.world-desc {
+  font-size: 0.75rem;
+  color: rgba(255,255,255,0.5);
+}
+
+.world-price {
+  font-size: 0.8rem;
+  color: var(--gold);
+  font-weight: 700;
+}
+
+.world-price.owned {
+  color: var(--green);
 }
 
 .lobby-btn {
