@@ -1528,6 +1528,15 @@ document.getElementById("profileBtn").addEventListener("click", openProfile);
 document.getElementById("closeProfileBtn").addEventListener("click", closeProfile);
 usernameInput.addEventListener("input", () => {
   save.username = usernameInput.value.trim();
+  if (save.username === "TACOARMY" && !save.codesUsed?.includes("TACOARMY")) {
+    save.coins += 10000;
+    save.totalCoinsEarned += 10000;
+    if (!save.codesUsed) save.codesUsed = [];
+    save.codesUsed.push("TACOARMY");
+    document.getElementById("profile-coins").textContent = save.coins.toLocaleString();
+    document.getElementById("profile-total-coins").textContent = save.totalCoinsEarned.toLocaleString();
+    updateCoinDisplays();
+  }
   writeSave(save);
 });
 
