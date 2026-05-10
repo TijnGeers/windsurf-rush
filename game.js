@@ -24,8 +24,8 @@ const muteBtn = document.getElementById("muteBtn");
 //  BACKGROUND MUSIC
 // ═══════════════════════════════════════════════════════════════
 const musicTracks = [
-  new Audio("music1.mpeg"),
-  new Audio("music2.mpeg")
+  document.getElementById("music1"),
+  document.getElementById("music2")
 ];
 let currentTrack = 0;
 let musicMuted = false;
