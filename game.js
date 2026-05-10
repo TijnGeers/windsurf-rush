@@ -227,20 +227,22 @@ function getActiveSkin() {
 // ═══════════════════════════════════════════════════════════════
 const WORLDS = [
   {
-    id: "ocean", name: "Oceaan", price: 0,
+    id: "ocean", name: "Oceaan", price: 0, coinMultiplier: 1,
     description: "De klassieke blauwe oceaan",
     sky: { start: ["#ffa94d", "#ff6b9d", "#4dabf7"], end: ["#1a1040", "#0d1b3e", "#0a2540"] },
     ocean: { start: ["#4dabf7", "#1c7ed6", "#0b4d8a"], end: ["#0a3060", "#072040", "#030d1a"] },
     sunColor: "#ffe066", sunGlow: "rgba(255,224,102,0.15)",
-    waveAlpha: 0.06, buoyColor: "#ff6b35", rockColor: "#4a4a5a", sharkColor: "#555570"
+    waveAlpha: 0.06, buoyColor: "#ff6b35", rockColor: "#4a4a5a",
+    sharkColor: "#555570", sharkGlow: ""
   },
   {
-    id: "lava", name: "Vulkaan", price: 5000,
-    description: "Surf over gloeiende lava!",
+    id: "lava", name: "Vulkaan", price: 5000, coinMultiplier: 2,
+    description: "Surf over gloeiende lava! (x2 coins)",
     sky: { start: ["#4a0000", "#8b0000", "#1a0000"], end: ["#0a0000", "#050000", "#020000"] },
     ocean: { start: ["#ff4500", "#cc3700", "#8b0000"], end: ["#4a0000", "#2d0000", "#1a0000"] },
     sunColor: "#ff6600", sunGlow: "rgba(255,102,0,0.2)",
-    waveAlpha: 0.08, buoyColor: "#ffd43b", rockColor: "#1a1a1a", sharkColor: "#333"
+    waveAlpha: 0.08, buoyColor: "#ffd43b", rockColor: "#1a1a1a",
+    sharkColor: "#ff4500", sharkGlow: "#ff6600"
   }
 ];
 
@@ -1175,17 +1177,23 @@ function drawObstacle(o) {
   } else if (o.type === "shark") {
     // Shark fin
     ctx.fillStyle = world.sharkColor;
-    ctx.shadowColor = "#000";
-    ctx.shadowBlur = 6;
+    ctx.shadowColor = world.sharkGlow || "#000";
+    ctx.shadowBlur = world.sharkGlow ? 18 : 6;
     ctx.beginPath();
     ctx.moveTo(o.radius, 0);
     ctx.lineTo(-o.radius * 0.5, -o.radius * 1.6);
     ctx.quadraticCurveTo(-o.radius * 0.2, -o.radius * 0.3, -o.radius, 0);
     ctx.closePath();
     ctx.fill();
+    // Lava glow edge
+    if (world.sharkGlow) {
+      ctx.strokeStyle = world.sharkGlow;
+      ctx.lineWidth = 2;
+      ctx.stroke();
+    }
     ctx.shadowBlur = 0;
-    // Water ripple
-    ctx.strokeStyle = "rgba(255,255,255,0.15)";
+    // Water/lava ripple
+    ctx.strokeStyle = world.sharkGlow ? "rgba(255,100,0,0.3)" : "rgba(255,255,255,0.15)";
     ctx.lineWidth = 1.5;
     ctx.beginPath();
     ctx.ellipse(0, 4, o.radius * 1.3, 5, 0, 0, TAU);
@@ -1379,7 +1387,9 @@ function gameOver() {
   burst(G.player.x, G.player.y, "#ff6b6b", 40, 8);
   draw();
 
-  const multiplier = getActiveSkin().coinMultiplier || 1;
+  const skinMult = getActiveSkin().coinMultiplier || 1;
+  const worldMult = getActiveWorld().coinMultiplier || 1;
+  const multiplier = skinMult + worldMult - 1;
   const earnedCoins = Math.floor(G.coinsThisRound * multiplier);
   save.coins += earnedCoins;
   save.totalCoinsEarned += earnedCoins;
@@ -1388,7 +1398,7 @@ function gameOver() {
 
   document.getElementById("final-score").textContent = G.score.toLocaleString();
   document.getElementById("final-combo").textContent = `x${G.bestCombo}`;
-  document.getElementById("earned-coins").textContent = `${earnedCoins} (x${multiplier})`;
+  document.getElementById("earned-coins").textContent = `${earnedCoins} (x${multiplier.toFixed(1)})`;
   updateCoinDisplays();
   gameoverEl.classList.remove("hidden");
 }
@@ -1396,7 +1406,9 @@ function gameOver() {
 function goToLobby() {
   // Save coins earned so far this round
   if (G.coinsThisRound > 0) {
-    const multiplier = getActiveSkin().coinMultiplier || 1;
+    const skinMult = getActiveSkin().coinMultiplier || 1;
+    const worldMult = getActiveWorld().coinMultiplier || 1;
+    const multiplier = skinMult + worldMult - 1;
     const earnedCoins = Math.floor(G.coinsThisRound * multiplier);
     save.coins += earnedCoins;
     save.totalCoinsEarned += earnedCoins;
