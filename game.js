@@ -1411,8 +1411,8 @@ function gameOver() {
 }
 
 function goToLobby() {
-  // Save coins earned so far this round
-  if (G.coinsThisRound > 0) {
+  // Save coins earned so far this round (only if still playing, not after game over)
+  if (G.running && G.coinsThisRound > 0) {
     const skinMult = getActiveSkin().coinMultiplier || 1;
     const worldMult = getActiveWorld().coinMultiplier || 1;
     const multiplier = skinMult + worldMult - 1;
