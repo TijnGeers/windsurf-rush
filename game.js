@@ -154,10 +154,10 @@ const SKINS = [
     body: "#7c3aed", trail: "#a855f7"
   },
   {
-    id: "obama", name: "Obama", price: 600, coinMultiplier: 2.0,
-    board: ["#002868", "#bf0a30", "#002868"],
-    sail: ["rgba(255,255,255,0.95)", "rgba(0,40,104,0.8)", "rgba(191,10,48,0.7)"],
-    body: "#3d2b1f", head: "#3d2b1f", trail: "#bf0a30"
+    id: "coral", name: "Coral Reef", price: 600, coinMultiplier: 2.0,
+    board: ["#ff6b6b", "#ff8787", "#e64980"],
+    sail: ["rgba(255,135,135,0.92)", "rgba(230,73,128,0.7)", "rgba(255,107,107,0.6)"],
+    body: "#e64980", trail: "#ff8787"
   },
   {
     id: "ocean", name: "Ocean King", price: 800, coinMultiplier: 2.2,
@@ -172,10 +172,22 @@ const SKINS = [
     body: "#9d4edd", trail: "#e0aaff"
   },
   {
+    id: "storm", name: "Storm Chaser", price: 1200, coinMultiplier: 2.7,
+    board: ["#343a40", "#868e96", "#212529"],
+    sail: ["rgba(134,142,150,0.92)", "rgba(52,58,64,0.7)", "rgba(33,37,41,0.6)"],
+    body: "#495057", trail: "#ced4da"
+  },
+  {
     id: "diamond", name: "Diamond", price: 1500, coinMultiplier: 3.0,
     board: ["#b8f2e6", "#e8fffe", "#89d0c7"],
     sail: ["rgba(232,255,254,0.92)", "rgba(184,242,230,0.7)", "rgba(137,208,199,0.6)"],
     body: "#b8f2e6", trail: "#e8fffe"
+  },
+  {
+    id: "phantomgold", name: "Phantom Gold", price: 2000, coinMultiplier: 3.2,
+    board: ["#1a1a2e", "#ffd700", "#1a1a2e"],
+    sail: ["rgba(255,215,0,0.92)", "rgba(26,26,46,0.7)", "rgba(255,215,0,0.6)"],
+    body: "#ffd700", trail: "#ffed4a"
   },
   {
     id: "dragon", name: "Dragon", price: 2500, coinMultiplier: 3.5,
