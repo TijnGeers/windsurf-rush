@@ -901,7 +901,7 @@ function update() {
   // ── HUD ──
   hudScore.textContent = G.score.toLocaleString();
   hudCombo.textContent = `x${G.combo}`;
-  hudCoins.textContent = save.coins + G.coinsThisRound;
+  hudCoins.textContent = save.coins;
   dashBar.style.width = `${Math.max(0, (1 - p.dashCooldown / p.dashMaxCooldown) * 100)}%`;
 
   let hearts = "";
