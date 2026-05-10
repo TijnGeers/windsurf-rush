@@ -413,3 +413,30 @@ button:hover {
     justify-content: center;
   }
 }
+
+@media (max-width: 600px) {
+  #hud {
+    padding: 10px 10px;
+  }
+  .hud-left, .hud-right {
+    gap: 8px;
+  }
+  .hud-value {
+    font-size: 1.1rem;
+  }
+  .hud-value.coins {
+    font-size: 0.95rem;
+  }
+  .hearts {
+    font-size: 1rem;
+  }
+  .dash-bar-wrap {
+    width: 50px;
+  }
+  .pause-btn {
+    width: 34px;
+    height: 34px;
+    font-size: 0.9rem;
+    border-radius: 10px;
+  }
+}
