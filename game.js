@@ -1332,6 +1332,15 @@ function gameOver() {
 }
 
 function goToLobby() {
+  // Save coins earned so far this round
+  if (G.coinsThisRound > 0) {
+    const multiplier = getActiveSkin().coinMultiplier || 1;
+    const earnedCoins = Math.floor(G.coinsThisRound * multiplier);
+    save.coins += earnedCoins;
+    save.totalCoinsEarned += earnedCoins;
+    if (G.score > save.highScore) save.highScore = G.score;
+    writeSave(save);
+  }
   G.running = false;
   G.paused = false;
   cancelAnimationFrame(rafId);
@@ -1354,14 +1363,6 @@ document.getElementById("closeShopBtn").addEventListener("click", closeShop);
 document.getElementById("pauseLobbyBtn").addEventListener("click", goToLobby);
 document.getElementById("gameoverLobbyBtn").addEventListener("click", goToLobby);
 
-// Mute button in lobby
-const muteBtn2 = document.getElementById("muteBtn2");
-function updateMuteButtons() {
-  const label = musicMuted ? "🔇 GELUID" : "🔊 GELUID";
-  if (muteBtn) muteBtn.textContent = musicMuted ? "🔇" : "🔊";
-  if (muteBtn2) muteBtn2.textContent = label;
-}
-if (muteBtn2) muteBtn2.addEventListener("click", () => { toggleMute(); updateMuteButtons(); });
 
 // ── Profile ──
 const profileOverlay = document.getElementById("profileOverlay");

@@ -63,6 +63,8 @@ canvas {
   align-items: center;
   justify-content: center;
   letter-spacing: 0;
+  position: relative;
+  z-index: 200;
 }
 
 .pause-btn:hover {
