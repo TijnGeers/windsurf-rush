@@ -1375,7 +1375,7 @@ function goToLobby() {
   G.running = false;
   G.paused = false;
   cancelAnimationFrame(rafId);
-  pauseMusic();
+  resumeMusic();
   document.getElementById("pauseOverlay").classList.add("hidden");
   gameoverEl.classList.add("hidden");
   shopOverlay.classList.add("hidden");
