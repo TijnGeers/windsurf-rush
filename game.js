@@ -1363,6 +1363,14 @@ document.getElementById("closeShopBtn").addEventListener("click", closeShop);
 document.getElementById("pauseLobbyBtn").addEventListener("click", goToLobby);
 document.getElementById("gameoverLobbyBtn").addEventListener("click", goToLobby);
 
+// Mute button in lobby
+const muteBtn2 = document.getElementById("muteBtn2");
+function updateMuteButtons() {
+  const icon = musicMuted ? "🔇" : "🔊";
+  if (muteBtn) muteBtn.textContent = icon;
+  if (muteBtn2) muteBtn2.textContent = icon + " GELUID";
+}
+if (muteBtn2) muteBtn2.addEventListener("click", () => { toggleMute(); updateMuteButtons(); });
 
 // ── Profile ──
 const profileOverlay = document.getElementById("profileOverlay");
