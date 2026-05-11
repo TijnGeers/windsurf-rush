@@ -313,6 +313,15 @@ const WORLDS = [
     sunColor: "#ff6600", sunGlow: "rgba(255,102,0,0.2)",
     waveAlpha: 0.08, buoyColor: "#ffd43b", rockColor: "#1a1a1a",
     sharkColor: "#ff4500", sharkGlow: "#ff6600"
+  },
+  {
+    id: "space", name: "Ruimte", price: 10000, coinMultiplier: 3,
+    description: "Surf door de ruimte! (x3 coins)",
+    sky: { start: ["#0a001a", "#1a0033", "#000011"], end: ["#000005", "#05001a", "#000008"] },
+    ocean: { start: ["#1a0044", "#0d0033", "#2d004d"], end: ["#0a001a", "#050011", "#0d0022"] },
+    sunColor: "#cc99ff", sunGlow: "rgba(204,153,255,0.2)",
+    waveAlpha: 0.04, buoyColor: "#00e5ff", rockColor: "#2a1a3e",
+    sharkColor: "#7c4dff", sharkGlow: "#b388ff"
   }
 ];
 
