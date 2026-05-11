@@ -127,7 +127,7 @@ canvas {
 }
 
 /* ── Overlays ── */
-#overlay, #gameoverOverlay, #pauseOverlay, #shopOverlay, #profileOverlay, #worldsOverlay {
+#overlay, #gameoverOverlay, #pauseOverlay, #shopOverlay, #profileOverlay, #worldsOverlay, #titlesOverlay {
   position: absolute;
   inset: 0;
   display: flex;
@@ -404,6 +404,80 @@ button:hover {
 .profile-btn:hover {
   background: rgba(77,217,255,0.2) !important;
   box-shadow: 0 14px 40px rgba(77,217,255,0.3) !important;
+}
+
+.titles-btn {
+  border-color: #ffd43b !important;
+  color: #ffd43b !important;
+  background: rgba(255,212,59,0.08) !important;
+  box-shadow: 0 8px 30px rgba(255,212,59,0.15) !important;
+}
+.titles-btn:hover {
+  background: rgba(255,212,59,0.2) !important;
+  box-shadow: 0 14px 40px rgba(255,212,59,0.3) !important;
+}
+
+/* ── Titles Panel ── */
+.titles-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: 36px 44px;
+  background: rgba(4,24,37,0.94);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 32px;
+  backdrop-filter: blur(24px);
+  box-shadow: 0 40px 120px rgba(0,0,0,0.6);
+  max-width: 500px;
+  width: calc(100vw - 40px);
+  max-height: calc(100vh - 40px);
+  overflow-y: auto;
+}
+
+.titles-panel h2 {
+  font-size: 1.6rem;
+  font-weight: 900;
+  color: #fff;
+  margin: 0;
+}
+
+.titles-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+}
+
+.title-card {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 14px 18px;
+  border-radius: 14px;
+  background: rgba(255,255,255,0.04);
+  border: 2px solid rgba(255,255,255,0.08);
+  transition: all 0.2s;
+}
+
+.title-card.active {
+  border-color: var(--gold);
+  background: rgba(255,212,59,0.06);
+}
+
+.title-card.locked {
+  opacity: 0.5;
+}
+
+.title-name {
+  font-size: 1rem;
+  font-weight: 900;
+  color: #fff;
+}
+
+.title-desc {
+  font-size: 0.7rem;
+  color: rgba(255,255,255,0.5);
 }
 
 .worlds-btn {

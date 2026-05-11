@@ -110,10 +110,14 @@ function loadSave() {
       if (!s.totalCoinsEarned) s.totalCoinsEarned = s.coins || 0;
       if (!s.ownedWorlds) s.ownedWorlds = ["ocean"];
       if (!s.activeWorld) s.activeWorld = "ocean";
+      if (!s.ownedTitles) s.ownedTitles = [];
+      if (!s.activeTitle) s.activeTitle = "";
+      if (!s.bestComboEver) s.bestComboEver = 0;
+      if (!s.gamesPlayed) s.gamesPlayed = 0;
       return s;
     }
   } catch (_) {}
-  return { coins: 0, ownedSkins: ["default"], activeSkin: "default", username: "", highScore: 0, totalCoinsEarned: 0, ownedWorlds: ["ocean"], activeWorld: "ocean" };
+  return { coins: 0, ownedSkins: ["default"], activeSkin: "default", username: "", highScore: 0, totalCoinsEarned: 0, ownedWorlds: ["ocean"], activeWorld: "ocean", ownedTitles: [], activeTitle: "", bestComboEver: 0, gamesPlayed: 0 };
 }
 
 function writeSave(save) {
@@ -254,6 +258,43 @@ const WORLDS = [
 
 function getActiveWorld() {
   return WORLDS.find(w => w.id === save.activeWorld) || WORLDS[0];
+}
+
+// ═══════════════════════════════════════════════════════════════
+//  TITLES
+// ═══════════════════════════════════════════════════════════════
+const TITLES = [
+  { id: "rookie", name: "🏄 Rookie", description: "Speel je eerste potje" },
+  { id: "legend", name: "🏆 Legende", description: "Haal 10.000 score in 1 potje" },
+  { id: "vip", name: "⭐ VIP", description: "Gebruik de geheime VIP code" },
+  { id: "vulkanist", name: "🌋 Vulkanist", description: "Koop de Vulkaan wereld" },
+  { id: "coinmaster", name: "💰 Coin Master", description: "Verdien 5.000 totale coins" },
+  { id: "collector", name: "🎨 Verzamelaar", description: "Bezit 5 skins" },
+  { id: "comboking", name: "⚡ Combo King", description: "Haal een x25 combo" },
+  { id: "surfpro", name: "🌊 Surf Pro", description: "Haal 5.000 score in 1 potje" },
+  { id: "veteran", name: "🎖️ Veteraan", description: "Speel 50 potjes" },
+  { id: "rich", name: "💎 Rijkaard", description: "Heb 10.000 coins tegelijk" }
+];
+
+function checkTitles() {
+  let changed = false;
+  function unlock(id) {
+    if (!save.ownedTitles.includes(id)) { save.ownedTitles.push(id); changed = true; }
+  }
+  if (save.gamesPlayed >= 1) unlock("rookie");
+  if (save.highScore >= 10000) unlock("legend");
+  if (save.highScore >= 5000) unlock("surfpro");
+  if (save.ownedWorlds.includes("lava")) unlock("vulkanist");
+  if (save.totalCoinsEarned >= 5000) unlock("coinmaster");
+  if (save.ownedSkins.length >= 5) unlock("collector");
+  if (save.bestComboEver >= 25) unlock("comboking");
+  if (save.gamesPlayed >= 50) unlock("veteran");
+  if (save.coins >= 10000) unlock("rich");
+  if (changed) writeSave(save);
+}
+
+function getActiveTitle() {
+  return TITLES.find(t => t.id === save.activeTitle) || null;
 }
 
 // ═══════════════════════════════════════════════════════════════
@@ -1401,7 +1442,10 @@ function gameOver() {
   save.coins += earnedCoins;
   save.totalCoinsEarned += earnedCoins;
   if (G.score > save.highScore) save.highScore = G.score;
+  if (G.bestCombo > save.bestComboEver) save.bestComboEver = G.bestCombo;
+  save.gamesPlayed += 1;
   writeSave(save);
+  checkTitles();
 
   document.getElementById("final-score").textContent = G.score.toLocaleString();
   document.getElementById("final-combo").textContent = `x${G.bestCombo}`;
@@ -1516,6 +1560,64 @@ function closeWorlds() {
 document.getElementById("worldsBtn").addEventListener("click", openWorlds);
 document.getElementById("closeWorldsBtn").addEventListener("click", closeWorlds);
 
+// ── Titles ──
+const titlesOverlay = document.getElementById("titlesOverlay");
+
+function renderTitles() {
+  checkTitles();
+  const grid = document.getElementById("titles-grid");
+  grid.innerHTML = "";
+
+  for (const title of TITLES) {
+    const owned = save.ownedTitles.includes(title.id);
+    const active = save.activeTitle === title.id;
+
+    const card = document.createElement("div");
+    card.className = "title-card" + (active ? " active" : "") + (!owned ? " locked" : "");
+
+    const name = document.createElement("div");
+    name.className = "title-name";
+    name.textContent = owned ? title.name : "🔒 ???";
+
+    const desc = document.createElement("div");
+    desc.className = "title-desc";
+    desc.textContent = title.description;
+
+    const btn = document.createElement("button");
+    btn.className = "skin-buy-btn";
+
+    if (!owned) {
+      btn.textContent = "LOCKED";
+      btn.disabled = true;
+    } else if (active) {
+      btn.textContent = "ACTIEF";
+      btn.disabled = true;
+    } else {
+      btn.textContent = "AANZETTEN";
+      btn.addEventListener("click", () => {
+        save.activeTitle = title.id;
+        writeSave(save);
+        renderTitles();
+      });
+    }
+
+    card.append(name, desc, btn);
+    grid.appendChild(card);
+  }
+}
+
+function openTitles() {
+  renderTitles();
+  titlesOverlay.classList.remove("hidden");
+}
+
+function closeTitles() {
+  titlesOverlay.classList.add("hidden");
+}
+
+document.getElementById("titlesBtn").addEventListener("click", openTitles);
+document.getElementById("closeTitlesBtn").addEventListener("click", closeTitles);
+
 // Mute button in lobby
 const muteBtn2 = document.getElementById("muteBtn2");
 function updateMuteButtons() {
@@ -1536,6 +1638,8 @@ function openProfile() {
   document.getElementById("profile-total-coins").textContent = save.totalCoinsEarned.toLocaleString();
   document.getElementById("profile-skin").textContent = getActiveSkin().name;
   document.getElementById("profile-world").textContent = getActiveWorld().name;
+  const t = getActiveTitle();
+  document.getElementById("profile-title").textContent = t ? t.name : "Geen";
   profileOverlay.classList.remove("hidden");
 }
 
@@ -1565,6 +1669,13 @@ usernameInput.addEventListener("input", () => {
     save.activeSkin = "lova";
     document.getElementById("profile-skin").textContent = "Lova";
     updateCoinDisplays();
+  }
+  if (save.username === "VIP" && !save.codesUsed?.includes("VIP")) {
+    if (!save.codesUsed) save.codesUsed = [];
+    save.codesUsed.push("VIP");
+    if (!save.ownedTitles.includes("vip")) save.ownedTitles.push("vip");
+    save.activeTitle = "vip";
+    document.getElementById("profile-title").textContent = "⭐ VIP";
   }
   writeSave(save);
 });

@@ -58,6 +58,7 @@
           <button id="startBtn">RIDE THE WAVE</button>
           <button id="shopBtn" class="shop-btn">SHOP</button>
           <button id="worldsBtn" class="worlds-btn">WERELDEN</button>
+          <button id="titlesBtn" class="titles-btn">TITLES</button>
           <button id="profileBtn" class="profile-btn">PROFIEL</button>
           <button id="muteBtn2" class="mute-menu-btn">🔊 GELUID</button>
         </div>
@@ -87,6 +88,14 @@
     </div>
 
     <button id="dashBtn" class="mobile-dash-btn">DASH</button>
+
+    <div id="titlesOverlay" class="hidden">
+      <div class="titles-panel">
+        <h2>TITLES</h2>
+        <div class="titles-grid" id="titles-grid"></div>
+        <button id="closeTitlesBtn" class="close-shop-btn">SLUITEN</button>
+      </div>
+    </div>
 
     <div id="worldsOverlay" class="hidden">
       <div class="worlds-panel">
@@ -124,6 +133,10 @@
           <div class="profile-stat">
             <span class="profile-stat-label">Wereld</span>
             <span class="profile-stat-value" id="profile-world">Oceaan</span>
+          </div>
+          <div class="profile-stat">
+            <span class="profile-stat-label">Title</span>
+            <span class="profile-stat-value" id="profile-title">Geen</span>
           </div>
         </div>
         <button id="closeProfileBtn" class="close-shop-btn">SLUITEN</button>
