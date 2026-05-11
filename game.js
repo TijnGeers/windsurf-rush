@@ -221,6 +221,66 @@ const SKINS = [
     body: "#c41e3a", trail: "#ff4500"
   },
   {
+    id: "thunder", name: "Thunder", price: 3000, coinMultiplier: 4.0,
+    board: ["#1a237e", "#ffd600", "#0d47a1"],
+    sail: ["rgba(255,214,0,0.92)", "rgba(26,35,126,0.7)", "rgba(13,71,161,0.6)"],
+    body: "#ffd600", trail: "#ffff00"
+  },
+  {
+    id: "blizzard", name: "Blizzard", price: 3500, coinMultiplier: 4.5,
+    board: ["#e3f2fd", "#90caf9", "#1565c0"],
+    sail: ["rgba(144,202,249,0.92)", "rgba(227,242,253,0.7)", "rgba(21,101,192,0.6)"],
+    body: "#90caf9", trail: "#e3f2fd"
+  },
+  {
+    id: "phoenix", name: "Phoenix", price: 4000, coinMultiplier: 5.0,
+    board: ["#ff6f00", "#ffab00", "#e65100"],
+    sail: ["rgba(255,171,0,0.92)", "rgba(255,111,0,0.7)", "rgba(230,81,0,0.6)"],
+    body: "#ff8f00", trail: "#ffd54f"
+  },
+  {
+    id: "venom", name: "Venom", price: 5000, coinMultiplier: 5.5,
+    board: ["#1b5e20", "#00e676", "#004d40"],
+    sail: ["rgba(0,230,118,0.92)", "rgba(27,94,32,0.7)", "rgba(0,77,64,0.6)"],
+    body: "#00c853", trail: "#69f0ae"
+  },
+  {
+    id: "eclipse", name: "Eclipse", price: 6000, coinMultiplier: 6.0,
+    board: ["#000000", "#4a148c", "#000000"],
+    sail: ["rgba(74,20,140,0.92)", "rgba(0,0,0,0.7)", "rgba(106,27,154,0.6)"],
+    body: "#6a1b9a", trail: "#ce93d8"
+  },
+  {
+    id: "plasma", name: "Plasma", price: 7500, coinMultiplier: 6.5,
+    board: ["#00bcd4", "#e040fb", "#00838f"],
+    sail: ["rgba(224,64,251,0.92)", "rgba(0,188,212,0.7)", "rgba(0,131,143,0.6)"],
+    body: "#e040fb", trail: "#80deea"
+  },
+  {
+    id: "titan", name: "Titan", price: 9000, coinMultiplier: 7.0,
+    board: ["#37474f", "#b0bec5", "#263238"],
+    sail: ["rgba(176,190,197,0.92)", "rgba(55,71,79,0.7)", "rgba(38,50,56,0.6)"],
+    body: "#78909c", trail: "#cfd8dc"
+  },
+  {
+    id: "nebula", name: "Nebula", price: 12000, coinMultiplier: 8.0,
+    board: ["#1a0033", "#ff00ff", "#4a0080"],
+    sail: ["rgba(255,0,255,0.92)", "rgba(74,0,128,0.7)", "rgba(26,0,51,0.6)"],
+    body: "#d500f9", trail: "#ea80fc"
+  },
+  {
+    id: "infinity", name: "Infinity", price: 15000, coinMultiplier: 9.0,
+    board: ["#0d0d0d", "#00e5ff", "#0d0d0d"],
+    sail: ["rgba(0,229,255,0.92)", "rgba(13,13,13,0.7)", "rgba(0,184,212,0.6)"],
+    body: "#00e5ff", trail: "#84ffff"
+  },
+  {
+    id: "godlike", name: "Godlike", price: 20000, coinMultiplier: 10.0,
+    board: ["#ffd700", "#ffffff", "#ffd700"],
+    sail: ["rgba(255,255,255,0.92)", "rgba(255,215,0,0.7)", "rgba(255,255,255,0.6)"],
+    body: "#ffffff", trail: "#ffd700"
+  },
+  {
     id: "lova", name: "Lova", price: 0, coinMultiplier: 67, secret: true,
     board: ["#ff69b4", "#ffb6c1", "#ff1493"],
     sail: ["rgba(255,182,193,0.92)", "rgba(255,105,180,0.7)", "rgba(255,20,147,0.6)"],
